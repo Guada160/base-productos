@@ -4,10 +4,10 @@ const Database = require("better-sqlite3");
 const app = express();
 app.use(express.json());
 
-// Crear o conectar base de datos
+
 const db = new Database("productos.db");
 
-// Crear tabla si no existe
+
 db.prepare(`
 CREATE TABLE IF NOT EXISTS productos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS productos (
 )
 `).run();
 
-// Verificar si hay productos cargados
+
 const cantidad = db.prepare("SELECT COUNT(*) as total FROM productos").get();
 
 if (cantidad.total === 0) {
@@ -33,15 +33,13 @@ if (cantidad.total === 0) {
     console.log("Productos iniciales cargados");
 }
 
-// ENDPOINT 1
-// GET /productos
+
 app.get("/productos", (req, res) => {
     const productos = db.prepare("SELECT * FROM productos").all();
     res.json(productos);
 });
 
-// ENDPOINT 2
-// GET /productos/:id
+
 app.get("/productos/:id", (req, res) => {
     const id = req.params.id;
 
@@ -58,7 +56,7 @@ app.get("/productos/:id", (req, res) => {
     res.json(producto);
 });
 
-// Puerto
+
 const PORT = 3000;
 
 app.listen(PORT, () => {
